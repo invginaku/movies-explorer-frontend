@@ -1,0 +1,16 @@
+.promo {
+    min-height: 634px;
+    background-color: #F3C1F8;
+    background-image: url(../../images/promo-background.svg);
+    background-size: auto;
+    background-position: bottom 60px right 70px;
+    background-repeat: no-repeat;
+}
+
+.promo__title {
+    padding: 124px 0 0 70px;
+    margin: 0;
+    font-size: 40px;
+    line-height: 52px;
+    user-select: none;
+}
