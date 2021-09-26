@@ -1,0 +1,40 @@
+.movies__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 270px);
+    justify-content: space-evenly;
+    column-gap: 18px;
+    row-gap: 32px;
+    padding: 0;
+    margin: 0 auto;
+    list-style-type: none;
+}
+
+.movies__item {
+    display: block;
+}
+
+.movies__more {
+    display: flex;
+    place-items: center;
+    place-content: center;
+    min-height: 166px;
+    margin-top: 30px;
+}
+
+.movies__more-button {
+    display: block;
+    width: 320px;
+    min-height: 36px;
+    padding: 0;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: .1s linear;
+    font-size: 12px;
+}
+
+.movies__more-button:hover {
+    opacity: .5;
+}
