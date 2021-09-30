@@ -1,0 +1,15 @@
+.input {
+    width: 100%;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.input:focus {
+    border-bottom-color: #F3C1F8;
+}
+
+.input_invalid {
+    color: #ee3465;
+}

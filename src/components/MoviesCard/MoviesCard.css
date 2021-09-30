@@ -25,10 +25,10 @@
 }
 
 .card__title {
+    height: 24px;
     margin: 0;
     font-size: 13px;
     font-weight: 500;
-    line-height: initial;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -42,4 +42,38 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+@media screen and (max-width: 799px) {
+    .card {
+        width: 339px;
+        height: 257px;
+    }
+
+    .card__picture {
+        width: 339px;
+        height: 190px;
+    }
+
+    .card__label {
+        width: 339px;
+        height: 67px;
+    }
+}
+
+@media screen and (max-width: 399px) {
+    .card {
+        width: 300px;
+        height: 235px;
+    }
+
+    .card__picture {
+        width: 300px;
+        height: 168px;
+    }
+
+    .card__label {
+        width: 300px;
+        height: 67px;
+    }
 }
