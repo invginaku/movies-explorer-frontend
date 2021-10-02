@@ -1,0 +1,116 @@
+.search {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    min-height: 321px;
+    padding: 60px 70px 69px;
+}
+
+.search__form {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    width: 100%;
+    min-height: 236px;
+}
+
+.search__input-wrapper {
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    place-items: center;
+    place-content: center;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.search__input {
+    position: relative;
+    width: 1140px;
+    height: 46px;
+    border: none;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.search__input::placeholder {
+    color: #a0a0a0;
+}
+
+.search__button {
+    position: relative;
+    min-width: 34px;
+    min-height: 34px;
+    padding: 0;
+    border: none;
+    border-radius: 48px;
+    background-color: #ffffff;
+    background-image: url('../../images/search.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    transition: linear .2s;
+}
+
+.search__button-black {
+    background-image: url('../../images/find.svg');
+}
+
+.search__button:hover {
+    opacity: .5;
+}
+
+.search__checkbox-wrapper {
+    display: flex;
+    margin-top: 30px;
+}
+
+.search__checkbox {
+    position: relative;
+}
+
+.search__checkbox-label {
+    display: block;
+    margin: 0 0 0 12px;
+    line-height: 18px;
+}
+
+@media screen and (max-width: 799px) {
+    .search {
+        padding: 80px 30px 50px;
+    }
+
+    .search__form {
+        place-content: flex-start;
+        min-height: 157px;
+    }
+}
+
+@media screen and (max-width: 399px) {
+    .search {
+        padding: 20px 14px 0;
+    }
+
+    .search__form {
+        min-height: 108px;
+        padding-bottom: 50px;
+    }
+
+    .search__input {
+        font-size: 18px;
+        line-height: 17px;
+        margin-bottom: 0;
+        text-align: left;
+    }
+
+    .search__checkbox-label {
+        margin-left: 13px;
+        font-size: 11px;
+    }
+
+    .search__button-white {
+        display: none;
+    }
+}

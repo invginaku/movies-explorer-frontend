@@ -1,0 +1,35 @@
+.like {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #f4f4f4;
+    background-image: url('../../images/like-invisible.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+}
+.like:active {
+    background-image: url('../../images/like-active.svg');
+}
+.like_active {
+    background-image: url('../../images/like-active.svg');
+}
+
+.like_loading {
+    border: none;
+    background-image: url('../../images/like-loader.svg');
+}
+
+.like_type_remove {
+    display: none;
+    border: none;
+    box-shadow: none;
+    background-image: url('../../images/dislike-button.svg');
+}
+
+.card:hover .like_type_remove {
+    display: block;
+}
