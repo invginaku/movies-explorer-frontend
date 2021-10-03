@@ -17,7 +17,8 @@ class MoviesApi {
     }
 }
 
-
-const moviesApi = new MoviesApi('https://api.nomoreparties.co/beatfilm-movies');
+const moviesApi = new MoviesApi({
+    baseUrl: 'https://api.nomoreparties.co/beatfilm-movies',
+});
 
 export default moviesApi;
