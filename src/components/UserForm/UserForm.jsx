@@ -15,7 +15,12 @@ function UserForm({
     }
 
     return(
-        <form className="form" onChange={handleChange} onSubmit={onSubmit}>
+        <form
+            className="form"
+            onChange={handleChange}
+            onSubmit={onSubmit}
+            noValidate
+        >
             <h1 className="form__title">{title}</h1>
             <fieldset className="form__fieldset">
                 {children}

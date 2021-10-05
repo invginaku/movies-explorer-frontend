@@ -5,7 +5,7 @@ class MainApi {
 
     _checkResponseData(res) {
         if (!res.ok) {
-            return Promise.reject(`Ошибка: ${res.status}`);
+            return Promise.reject(res.status);
         }
 
         return res.json();
@@ -78,9 +78,8 @@ class MainApi {
             method: 'GET',
             credentials: 'include',
         })
-            .then(res => this._checkResponseData);
+            .then(res => this._checkResponseData(res));
     }
-
 
     addMovie(data) {
         return fetch(`${this._baseUrl}/movies`, {

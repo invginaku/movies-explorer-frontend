@@ -6,8 +6,11 @@ import Logo from '../Logo/Logo.jsx';
 import UserForm from '../UserForm/UserForm.jsx';
 import Input from '../Input/Input.jsx';
 import LoginRedirect from '../LoginRedirect/LoginRedirect.jsx';
+import Preloader from '../Preloader/Preloader.jsx';
 
-function Login() {
+function Login({ onSignIn }) {
+    const [isLoading, setIsLoading] = React.useState(false);
+
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
@@ -15,50 +18,59 @@ function Login() {
     const [emailValidity, setEmailValidity] = React.useState(true);
     const [passwordValidity, setPasswordValidity] = React.useState(true);
 
-    function handleEmailChange(evt) {
-        setEmail(evt.target.value);
+    function handleEmailChange(value) {
+        setEmail(value);
     }
 
-    function handlePasswordChange(evt) {
-        setPassword(evt.target.value);
+    function handlePasswordChange(value) {
+        setPassword(value);
     }
 
     function handleSubmit(evt) {
         evt.preventDefault();
 
-        console.log('Отправлены данные:');
-        console.log(`Пароль: ${password}`);
-        console.log(`Email: ${email}`);
+        setIsLoading(true);
+
+        onSignIn({ email, password })
+            .finally(() => {
+                if (isLoading) {
+                    setIsLoading(false);
+                }
+            });
     }
 
     return(
         <section className="login">
             <div className="login__container">
-                <Logo userForm={true} />
-                <UserForm
-                    place="login"
-                    formValidityState={formValidity}
-                    onFormValidityChange={setFormValidity}
-                    onSubmit={handleSubmit}
-                >
-                    <Input
-                        inputType="email"
-                        inputName="email"
-                        inputLabel="E-mail"
-                        inputValidityState={emailValidity}
-                        onInputValidityChange={setEmailValidity}
-                        onValueChange={handleEmailChange}
-                    />
-                    <Input
-                        inputType="password"
-                        inputName="password"
-                        inputLabel="Пароль"
-                        inputValidityState={passwordValidity}
-                        onInputValidityChange={setPasswordValidity}
-                        onValueChange={handlePasswordChange}
-                    />
-                </UserForm>
-                <LoginRedirect place="login" />
+                {!isLoading && (<>
+                    <Logo userForm={true} />
+                    <UserForm
+                        place="login"
+                        formValidityState={formValidity}
+                        onFormValidityChange={setFormValidity}
+                        onSubmit={handleSubmit}
+                    >
+                        <Input
+                            inputType="email"
+                            inputName="email"
+                            inputLabel="E-mail"
+                            inputValidityState={emailValidity}
+                            onInputValidityChange={setEmailValidity}
+                            onValueChange={handleEmailChange}
+                        />
+                        <Input
+                            inputType="password"
+                            inputName="password"
+                            inputLabel="Пароль"
+                            inputMinLength={6}
+                            inputValidityState={passwordValidity}
+                            onInputValidityChange={setPasswordValidity}
+                            onValueChange={handlePasswordChange}
+                        />
+                    </UserForm>
+                    <LoginRedirect place="login" />
+                </>)}
+                {isLoading && (<Preloader />)}
             </div>
         </section>
     );

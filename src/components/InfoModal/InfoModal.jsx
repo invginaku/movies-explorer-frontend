@@ -6,12 +6,33 @@ function InfoModal({ state, onClose }) {
         window.location.reload();
     }
 
+    const modalBaseClassName = 'root__modal modal';
+    let modalClassName;
+
+    if (!state.open) {
+        modalClassName = modalBaseClassName + ' modal_hidden';
+    } else {
+        modalClassName = modalBaseClassName;
+    }
+
+    if (!state.error) {
+        modalClassName += ' modal_success';
+    }
+
     return(
-        <div className={`root__modal modal ${!state.open ? 'modal_hidden' : ''}`}>
-            <button className="modal__close" type="button" onClick={onClose} />
-            <h1 className="modal__title">{state.title}</h1>
+        <div className={modalClassName}>
+            <button
+                className={`modal__close ${!state.error ? 'modal__close_success' : ''}`}
+                type="button"
+                onClick={onClose}
+            />
+            <h1
+                className={`modal__title ${!state.error ? 'modal__title_success' : ''}`}
+            >
+                {state.title}
+            </h1>
             <p className="modal__text">{state.message}</p>
-            <p className="modal__advice">
+            {state.error && (<p className="modal__advice">
                 Попробуйте <button
                     className="modal__refresh"
                     type="button"
@@ -19,7 +40,7 @@ function InfoModal({ state, onClose }) {
                 >
                     обновить
             </button> страницу.
-            </p>
+            </p>)}
         </div>
     );
 }

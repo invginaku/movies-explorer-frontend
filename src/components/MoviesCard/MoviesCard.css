@@ -7,7 +7,7 @@
     display: block;
     width: 270px;
     height: 151px;
-    object-fit: contain;
+    object-fit: cover;
 }
 
 .card__label {
@@ -42,6 +42,13 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.card__button {
+    display: block;
+    padding: 0;
+    border: none;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 799px) {

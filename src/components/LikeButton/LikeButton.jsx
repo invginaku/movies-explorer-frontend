@@ -2,12 +2,14 @@ import React from 'react';
 
 import './LikeButton.css';
 
-function LikeButton({ type }) {
+function LikeButton({
+                        type,
+                        isLiked,
+                        onLike,
+                        onDislike,
+                    }) {
 
     const [isLoading, setIsLoading] = React.useState(false);
-
-    const [isLiked, setIsLiked] = React.useState(false);
-
     const baseClassName = type === 'remove' ? 'like like_type_remove' : 'like';
 
     let className;
@@ -22,10 +24,16 @@ function LikeButton({ type }) {
 
     function handleLikeClick() {
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLiked(!isLiked);
-            setIsLoading(false);
-        }, 300);
+        if (type === 'remove') {
+            onDislike()
+                .finally(() => setIsLoading(false));
+        } else if (isLiked) {
+            onDislike()
+                .finally(() => setIsLoading(false));
+        } else {
+            onLike()
+                .finally(() => setIsLoading(false));
+        }
     }
 
     return(

@@ -40,6 +40,11 @@
     opacity: .5;
 }
 
+.movies__not-found {
+    text-align: center;
+    color: #ee3465;
+}
+
 @media screen and (max-width: 799px) {
     .movies__grid {
         grid-template-columns: repeat(auto-fit, 339px);

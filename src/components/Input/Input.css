@@ -13,3 +13,8 @@
 .input_invalid {
     color: #ee3465;
 }
+
+.input_profile {
+    font-size: 11px;
+    text-align: right;
+}

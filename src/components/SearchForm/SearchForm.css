@@ -1,4 +1,5 @@
 .search {
+    position: relative;
     display: flex;
     flex-direction: column;
     place-items: center;
@@ -30,7 +31,7 @@
     width: 1140px;
     height: 46px;
     border: none;
-    margin-bottom: 15px;
+    padding-bottom: 15px;
     text-align: center;
     font-size: 28px;
 }
@@ -77,6 +78,22 @@
     line-height: 18px;
 }
 
+.search__error {
+    position: absolute;
+    top: 25px;
+    left: auto;
+    display: block;
+    color: red;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility .3s, opacity .3s linear;
+}
+
+.search__error_visible {
+    visibility: visible;
+    opacity: 1;
+}
+
 @media screen and (max-width: 799px) {
     .search {
         padding: 80px 30px 50px;
@@ -85,6 +102,10 @@
     .search__form {
         place-content: flex-start;
         min-height: 157px;
+    }
+
+    .search__error {
+        top: -35px;
     }
 }
 
