@@ -12,11 +12,6 @@ function Navigation({
                         onMenuClose
                     }) {
 
-    const profileLinkClassName =
-        (place === 'main') ?
-            'navigation__profile-link navigation__profile-link_type_login' :
-            'navigation__profile-link navigation__profile-link_type_profile';
-
     return(
         <>
             <nav className="navigation">
@@ -59,7 +54,7 @@ function Navigation({
                     </li>}
                     {(place !== 'main' || loggedIn) && <li className="navigation__list-item navigation__list-item_type_button">
                         <Link
-                            className={profileLinkClassName}
+                            className="navigation__profile-link"
                             to="/profile"
                         >
                             Аккаунт
