@@ -7,7 +7,7 @@ function ProtectedRoute({ component: Component, ...props }) {
     return(
         <Route>
             {props.loggedIn === undefined && (<Preloader />)}
-            {props.loggedIn === false && (<Redirect to="/signin" />)}
+            {props.loggedIn === false && (<Redirect to="/" />)}
             {props.loggedIn && (<Component {...props} />)}
         </Route>
     );
