@@ -18,7 +18,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "scp -r ./build/* invginaku@84.201.179.68:/home/invginaku/movies-explorer-frontend"
+    "deploy": "scp -r ./build/* invginaku@84.252.142.125:/home/invginaku/movies-explorer-frontend"
   },
   "eslintConfig": {
     "extends": [
