@@ -51,6 +51,7 @@ function Login({ onSignIn }) {
                         onSubmit={handleSubmit}
                     >
                         <Input
+                            inputPattern = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
                             inputType="email"
                             inputName="email"
                             inputLabel="E-mail"

@@ -23,7 +23,7 @@ function MoviesCardList({
 
     moviesArray.length = moviesToMap;
 
-    const showMoreButton = moviesArray.length >= moviesToShow.length ? false : true;
+    const showMoreButton = moviesArray.length < moviesToShow.length;
 
     function getMoreMovies() {
         onGetMoreMovies(moviesToMap + moviesToAdd);

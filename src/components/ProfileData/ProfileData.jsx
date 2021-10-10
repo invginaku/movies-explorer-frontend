@@ -75,6 +75,7 @@ function ProfileData({ onEditProfile, onSignOut }) {
                         </div>
                         <div className="profile-data__input-wrapper">
                             <Input
+                                inputPattern = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
                                 place="profile"
                                 inputType="email"
                                 inputName="email"
