@@ -1,19 +1,28 @@
 import React from 'react';
-import {Route, Switch, useHistory} from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
+
 import './App.css';
-import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
+
+import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
+
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
+
 import Profile from '../Profile/Profile.jsx';
 import Register from '../Register/Register.jsx';
 import Login from '../Login/Login.jsx';
+
 import Main from '../Main/Main.jsx';
 import Movies from '../Movies/Movies.jsx';
 import SavedMovies from '../SavedMovies/SavedMovies.jsx';
+
 import NotFound from '../NotFound/NotFound.jsx';
+
 import InfoModal from '../InfoModal/InfoModal.jsx';
 import MovieModal from '../MovieModal/MovieModal.jsx';
+
 import moviesApi from '../../utils/MoviesApi.js';
 import mainApi from '../../utils/MainApi.js';
+
 import useCurrentWidth from '../../utils/useCurrentWidth.js';
 import getMoviesGridCounts from '../../utils/getMoviesGridCounts.js';
 import getErrorMessage from '../../utils/getErrorMessage.js';
@@ -126,10 +135,16 @@ function App() {
             .then(([movies, savedMovies]) => {
                 setSavedMovies(savedMovies);
 
-                return movies.map(movie => {
-                    movie.isLiked = !!savedMovies.find(savedMovie => savedMovie.movieId === movie.id);
+                const result = movies.map(movie => {
+                    if (savedMovies.find(savedMovie => savedMovie.movieId === movie.id)) {
+                        movie.isLiked = true;
+                    } else {
+                        movie.isLiked = false;
+                    }
                     return movie;
                 });
+
+                return result;
             })
             .catch(err => openModal(getErrorMessage(err)));
     }
@@ -147,12 +162,7 @@ function App() {
         return getMovies()
             .then(movies => filterMovies(movies, request, shortFilter))
             .then(movies => {
-                if (!movies[0]) {
-                    setMoviesNotFound(true);
-                } else {
-                    setMoviesNotFound(false);
-                }
-
+                setMoviesNotFound(!movies[0]);
                 setMoviesToShow(movies);
                 localStorage.setItem('searchMoviesResult', JSON.stringify(movies));
             })
@@ -172,12 +182,7 @@ function App() {
 
         const filteredSavedMovies = filterMovies(newSavedMovies, request, shortFilter);
 
-        if (!filteredSavedMovies[0]) {
-            setSavedMoviesNotFound(true);
-        } else {
-            setSavedMoviesNotFound(false);
-        }
-
+        setSavedMoviesNotFound(!filteredSavedMovies[0]);
         setSavedMoviesToShow(filteredSavedMovies);
         localStorage.setItem('searchSavedMoviesResult', JSON.stringify(filteredSavedMovies));
     }
@@ -186,6 +191,13 @@ function App() {
         return mainApi.addMovie(data)
             .then(res => {
                 return getSavedMovies()
+                    .then(() => {
+                        if (localStorage.savedRequest) {
+                            const savedShortMoviesFilter = localStorage.savedShortMovies === 'true' ? true : false;
+
+                            searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
+                        }
+                    })
                     .then(() => {
                         const movieIndex = moviesToShow.findIndex(item => item.id === res.movieId);
 
@@ -220,8 +232,9 @@ function App() {
         return mainApi.deleteSavedMovie(dbId)
             .then(res => {
                 getSavedMovies();
+
                 if (localStorage.savedRequest) {
-                    const savedShortMoviesFilter = localStorage.savedShortMovies === 'true';
+                    const savedShortMoviesFilter = localStorage.savedShortMovies === 'true' ? true : false;
 
                     searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
                 }
@@ -250,26 +263,17 @@ function App() {
                 })
                 .catch(() => clearData());
         } else {
-            setLoggedIn(false);
-            localStorage.clear();
             clearData();
         }
     }, []);
 
-
-    React.useEffect(() => {
-        if (localStorage.loggedIn === 'true') {
-                getSavedMovies()
-                .then(({data}) => {
-                    setSavedMovies(data);
-                })
-                .catch((err) => console.log(err))
-        }
-    }, [])
-
     React.useEffect(() => {
         if (localStorage.searchMoviesResult) {
             setMoviesToShow(JSON.parse(localStorage.searchMoviesResult));
+        }
+
+        if (localStorage.searchSavedMoviesResult) {
+            setSavedMoviesToShow(JSON.parse(localStorage.searchSavedMoviesResult));
         }
     }, []);
 
