@@ -1,9 +1,9 @@
 import React from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
+import {Route, Switch, useHistory} from 'react-router-dom';
 
 import './App.css';
 
-import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
+import {CurrentUserContext} from '../../contexts/CurrentUserContext.js';
 
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute.jsx';
 
@@ -135,16 +135,10 @@ function App() {
             .then(([movies, savedMovies]) => {
                 setSavedMovies(savedMovies);
 
-                const result = movies.map(movie => {
-                    if (savedMovies.find(savedMovie => savedMovie.movieId === movie.id)) {
-                        movie.isLiked = true;
-                    } else {
-                        movie.isLiked = false;
-                    }
+                return movies.map(movie => {
+                    movie.isLiked = !!savedMovies.find(savedMovie => savedMovie.movieId === movie.id);
                     return movie;
                 });
-
-                return result;
             })
             .catch(err => openModal(getErrorMessage(err)));
     }
@@ -193,7 +187,7 @@ function App() {
                 return getSavedMovies()
                     .then(() => {
                         if (localStorage.savedRequest) {
-                            const savedShortMoviesFilter = localStorage.savedShortMovies === 'true' ? true : false;
+                            const savedShortMoviesFilter = localStorage.savedShortMovies === 'true';
 
                             searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
                         }
@@ -234,7 +228,7 @@ function App() {
                 getSavedMovies();
 
                 if (localStorage.savedRequest) {
-                    const savedShortMoviesFilter = localStorage.savedShortMovies === 'true' ? true : false;
+                    const savedShortMoviesFilter = localStorage.savedShortMovies === 'true';
 
                     searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
                 }
