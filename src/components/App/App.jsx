@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, useHistory} from 'react-router-dom';
+import {Route, Switch, useHistory, Redirect} from 'react-router-dom';
 
 import './App.css';
 
@@ -317,10 +317,18 @@ function App() {
                     <Main loggedIn={loggedIn} />
                 </Route>
                 <Route exact path="/signup">
+                    {loggedIn ? (
+                        <Redirect to="movies" />
+                    ) : (
                     <Register onSignUp={signUp} />
+                        )}
                 </Route>
                 <Route exact path="/signin">
+                    {loggedIn ? (
+                        <Redirect to="movies" />
+                    ) : (
                     <Login onSignIn={signIn} />
+                        )}
                 </Route>
                 <ProtectedRoute
                     exact path="/profile"
