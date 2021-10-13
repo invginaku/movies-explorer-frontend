@@ -49,6 +49,8 @@ function ProfileData({ onEditProfile, onSignOut }) {
             });
     }
 
+    const isEnabled = (emailValidity || nameValidity) && (name !== currentUser.name || email !== currentUser.email);
+
     return(
         <>
             {!isLoading && (<form
@@ -92,7 +94,7 @@ function ProfileData({ onEditProfile, onSignOut }) {
                     <button
                         className="profile__button profile__button_type_edit"
                         type="submit"
-                        disabled={!formValidity}
+                        disabled={!formValidity || !isEnabled}
                     >
                         Редактировать
                     </button>
