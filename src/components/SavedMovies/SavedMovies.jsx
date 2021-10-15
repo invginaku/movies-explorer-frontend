@@ -15,7 +15,9 @@ function SavedMovies({
                          moviesToMap,
                          moviesToAdd,
                          savedMoviesNotFound,
+                         savedMovies,
                          getSavedMovies,
+                         setSavedMoviesToShow,
                          onSearchForSavedMovies,
                          onGetMoreMovies,
                          onDislike,
@@ -24,9 +26,11 @@ function SavedMovies({
                      }) {
     const [isLoading, setIsLoading] = React.useState(false);
 
-    React.useEffect(() => {
-        getSavedMovies();
-    }, [getSavedMovies]);
+    // React.useEffect(() => {
+    //     getSavedMovies().then((movies)  => {
+    //         setSavedMoviesToShow(movies);
+    //     });
+    // }, []);
 
     return(
         <>
@@ -43,7 +47,7 @@ function SavedMovies({
                 />
                 {isLoading && <Preloader />}
                 {
-                    !isLoading &&
+                   !isLoading &&
                     <MoviesCardList
                         place="saved"
                         moviesToShow={savedMoviesToShow}
@@ -55,7 +59,7 @@ function SavedMovies({
                         onOpenMovieModal={onOpenMovieModal}
                         onSetCurrentMovie={onSetCurrentMovie}
                     />
-                }
+               }
             </section>
             <Footer />
         </>

@@ -33,7 +33,7 @@ function MoviesCardList({
         <>
             {!notFound && <ul className={moviesGridClass}>
                 {moviesArray.map((item) => (
-                    <li className="movies__item" key={item.id || item._id}>
+                    <li className="movies__item" key={item.id || item._id || item.movieId}>
                     <MoviesCard
                         item={item}
                         likeType={moviesCardLikeType}

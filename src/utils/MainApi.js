@@ -74,6 +74,7 @@ class MainApi {
     }
 
     getSavedMovies() {
+        console.log('Get Movies request');
         return fetch(`${this._baseUrl}/movies`, {
             method: 'GET',
             credentials: 'include',

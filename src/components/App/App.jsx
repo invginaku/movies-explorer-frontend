@@ -35,7 +35,7 @@ function App() {
     const [currentUser, setCurrentUser] = React.useState({});
     const [loggedIn, setLoggedIn] = React.useState(undefined);
 
-    const [savedMovies, setSavedMovies] = React.useState([]);
+    const [savedMovies, setSavedMovies] = React.useState(undefined);
 
     const [moviesToShow, setMoviesToShow] = React.useState([]);
     const [savedMoviesToShow, setSavedMoviesToShow] = React.useState([]);
@@ -92,6 +92,8 @@ function App() {
     function clearData() {
         setLoggedIn(false);
         localStorage.clear();
+        setMoviesToShow([]);
+        setSavedMoviesToShow([]);
     }
 
     function signUp({ name, email, password }) {
@@ -144,6 +146,10 @@ function App() {
     }
 
     const getSavedMovies = React.useCallback(() => {
+        if (localStorage.savedMovies)
+            return new Promise((resolve, reject) => {
+                resolve(JSON.parse(localStorage.savedMovies));
+            });
         return mainApi.getSavedMovies()
             .then(res => {
                 setSavedMovies(res);
@@ -153,6 +159,17 @@ function App() {
     }, [openModal]);
 
     function searchForMovies(request, shortFilter) {
+        if (shortFilter && localStorage.request == request) {
+            return new Promise((resolve, reject) => {
+                resolve(filterMovies(moviesToShow, request, true));
+            })
+                .then(movies => {
+                    setMoviesNotFound(!movies[0]);
+                    setMoviesToShow(movies);
+                })
+                .catch(err => openModal(getErrorMessage(err)));
+        }
+
         return getMovies()
             .then(movies => filterMovies(movies, request, shortFilter))
             .then(movies => {
@@ -168,11 +185,11 @@ function App() {
         shortFilter,
         shouldGetSavedMovies = false,
     ) {
-        let newSavedMovies = [...savedMovies];
+        let newSavedMovies = savedMovies ? [...savedMovies] : [];
 
-        if (shouldGetSavedMovies) {
-            newSavedMovies = await getSavedMovies();
-        }
+        // if (shouldGetSavedMovies) {
+        //     newSavedMovies = await getSavedMovies();
+        // }
 
         const filteredSavedMovies = filterMovies(newSavedMovies, request, shortFilter);
 
@@ -185,14 +202,7 @@ function App() {
         return mainApi.addMovie(data)
             .then(res => {
                 return getSavedMovies()
-                    .then(() => {
-                        if (localStorage.savedRequest) {
-                            const savedShortMoviesFilter = localStorage.savedShortMovies === 'true';
-
-                            searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
-                        }
-                    })
-                    .then(() => {
+                    .then((movies) => {
                         const movieIndex = moviesToShow.findIndex(item => item.id === res.movieId);
 
                         const newMoviesToShow = [...moviesToShow];
@@ -201,6 +211,9 @@ function App() {
 
                         setMoviesToShow(newMoviesToShow);
                         localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
+
+                        movies.push(data);
+                        setSavedMovies(movies);
                     })
                     .catch(err => openModal(getErrorMessage(err)));
             })
@@ -223,24 +236,22 @@ function App() {
             }
         }
 
-        return mainApi.deleteSavedMovie(dbId)
+        return mainApi.deleteSavedMovie(movieId)
             .then(res => {
-                getSavedMovies();
+                getSavedMovies().then((movies) => {
+                    // delete like in movie list
+                    const movieIndex = moviesToShow.findIndex(item => item.id === movieId);
+                    if (movieIndex != -1) {
+                        const newMoviesToShow = [...moviesToShow];
+                        newMoviesToShow[movieIndex].isLiked = false;
+                        setMoviesToShow(newMoviesToShow);
+                        localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
+                    }
 
-                if (localStorage.savedRequest) {
-                    const savedShortMoviesFilter = localStorage.savedShortMovies === 'true';
-
-                    searchForSavedMovies(localStorage.savedRequest, savedShortMoviesFilter, true);
-                }
-
-                const movieIndex = moviesToShow.findIndex(item => item.id === movieId);
-
-                const newMoviesToShow = [...moviesToShow];
-
-                newMoviesToShow[movieIndex].isLiked = false;
-
-                setMoviesToShow(newMoviesToShow);
-                localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
+                    let index = movies.findIndex(item => item.movieId === movieId);
+                    movies.splice(index, 1);
+                    setSavedMovies(movies);
+                });
 
                 return res;
             })
@@ -278,6 +289,17 @@ function App() {
         setMoviesToAdd(newAddCount);
     }, [windowWidth]);
 
+    React.useEffect(() => {
+        if (savedMovies) {
+            localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
+            //TODO: handle search
+            setSavedMoviesToShow(savedMovies);
+        }
+        else {
+            localStorage.removeItem('savedMovies');
+        }
+    }, [savedMovies]);
+
     const menuProps = {
         isMenuOpen,
         onMenuOpen: openMenu,
@@ -302,7 +324,9 @@ function App() {
         moviesToMap,
         moviesToAdd,
         savedMoviesNotFound,
+        savedMovies,
         getSavedMovies,
+        setSavedMoviesToShow,
         onSearchForSavedMovies: searchForSavedMovies,
         onGetMoreMovies: setMoviesToMap,
         onDislike: deleteSavedMovie,
