@@ -159,7 +159,7 @@ function App() {
     }, [openModal]);
 
     function searchForMovies(request, shortFilter) {
-        if (shortFilter && localStorage.request == request) {
+        if (shortFilter && localStorage.request === request) {
             return new Promise((resolve, reject) => {
                 resolve(filterMovies(moviesToShow, request, true));
             })
@@ -221,17 +221,14 @@ function App() {
     }
 
     function deleteSavedMovie(movie) {
-        let dbId;
         let movieId;
 
         if (movie.dbId) {
-            dbId = movie.dbId;
             movieId = movie.movieId;
         } else {
             const movieToDelete = savedMovies.find(item => item.movieId === movie.movieId);
 
             if (movieToDelete) {
-                dbId = movieToDelete._id;
                 movieId = movieToDelete.movieId;
             }
         }
@@ -241,7 +238,7 @@ function App() {
                 getSavedMovies().then((movies) => {
                     // delete like in movie list
                     const movieIndex = moviesToShow.findIndex(item => item.id === movieId);
-                    if (movieIndex != -1) {
+                    if (movieIndex !== -1) {
                         const newMoviesToShow = [...moviesToShow];
                         newMoviesToShow[movieIndex].isLiked = false;
                         setMoviesToShow(newMoviesToShow);

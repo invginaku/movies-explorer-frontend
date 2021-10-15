@@ -36,7 +36,7 @@ function SearchForm({
             shortFilter = !shortMoviesRequest;
         }
 
-        if (!searchRequest && localStorageRequestKey != 'savedRequest') {
+        if (!searchRequest && localStorageRequestKey !== 'savedRequest') {
             setSearchError(true);
             return;
         }
