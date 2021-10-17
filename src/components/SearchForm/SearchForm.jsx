@@ -26,6 +26,14 @@ function SearchForm({
         localStorage.setItem(localStorageRequestKey, request);
     }
 
+    onbeforeunload = function() {
+        // delete localStorage[localStorageRequestKey];
+        // delete localStorage[localStorageCheckboxKey];
+        // delete localStorage['cachedRequest'];
+        localStorage.clear();
+        localStorage.setItem('loggedIn', true);
+    }
+
     function handleSearch(evt) {
         let shortFilter;
 
