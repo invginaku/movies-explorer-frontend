@@ -27,7 +27,7 @@ function MoviesCard({
     const duration = item.duration;
     const thumbnail = (item.image && item.image.formats && `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`) || item.thumbnail;
     let trailer = item.trailerLink || item.trailer;
-    if (trailer.substr(0, 4) !== 'http' ) {
+    if (typeof(trailer) !== 'string' || trailer.substr(0, 4) !== 'http' ) {
         trailer = 'https://youtube.com';
     }
 
