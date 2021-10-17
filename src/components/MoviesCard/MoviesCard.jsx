@@ -26,7 +26,10 @@ function MoviesCard({
     const image = (item.image && item.image.url && `https://api.nomoreparties.co${item.image.url}`) || item.image;
     const duration = item.duration;
     const thumbnail = (item.image && item.image.formats && `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`) || item.thumbnail;
-    const trailer = item.trailerLink || item.trailer;
+    let trailer = item.trailerLink || item.trailer;
+    if (trailer.substr(0, 4) !== 'http' ) {
+        trailer = 'https://youtube.com';
+    }
 
     const movie = {
         director,
