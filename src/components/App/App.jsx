@@ -90,12 +90,11 @@ function App() {
     }
 
     function clearData() {
-        localStorage.removeItem('searchSavedMoviesResult');
-        localStorage.clear();
         setMoviesToShow([]);
         setSavedMoviesToShow([]);
         setLoggedIn(false);
         setSavedMovies(undefined);
+        localStorage.clear();
     }
 
     function signUp({ name, email, password }) {
@@ -262,11 +261,14 @@ function App() {
                         //localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
                     }
 
-                    let moviesResult = JSON.parse(localStorage.searchMoviesResult);
-                    let index = moviesResult.findIndex(item => item.id === movie.movieId);
-                    if (index !== -1) {
-                        moviesResult[index].isLiked = false;
-                        localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
+                    let index = -1;
+                    if (localStorage.searchMoviesResult) {
+                        let moviesResult = JSON.parse(localStorage.searchMoviesResult);
+                        index = moviesResult.findIndex(item => item.id === movie.movieId);
+                        if (index !== -1) {
+                            moviesResult[index].isLiked = false;
+                            localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
+                        }
                     }
 
                     index = movies.findIndex(item => item.movieId === movieId);
