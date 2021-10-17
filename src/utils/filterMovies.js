@@ -10,7 +10,7 @@ function filterMovies(movies, request, shortFilter) {
             filteredMovies = filteredMovies.filter(movie => filterMoviesByRequest(request, movie));
         }
 
-        if (shortFilter) {
+        if (shortFilter && shortFilter.toString() === 'true') {
             filteredMovies = filteredMovies.filter(movie => movie.duration <= 40);
         }
     }

@@ -220,7 +220,6 @@ function App() {
                         newMoviesToShow[movieIndex].isLiked = true;
 
                         setMoviesToShow(newMoviesToShow);
-                        localStorage.savedShortMovies = false;
 
                         let moviesResult = JSON.parse(localStorage.searchMoviesResult);
                         const index = moviesResult.findIndex(item => item.id === res.movieId);
@@ -249,12 +248,6 @@ function App() {
                 movieId = movieToDelete.movieId;
             }
 
-            let moviesResult = JSON.parse(localStorage.searchMoviesResult);
-            const index = moviesResult.findIndex(item => item.id === movie.movieId);
-            if (index !== -1) {
-                moviesResult[index].isLiked = false;
-                localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
-            }
         }
 
         return mainApi.deleteSavedMovie(movieId)
@@ -269,7 +262,14 @@ function App() {
                         //localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
                     }
 
-                    let index = movies.findIndex(item => item.movieId === movieId);
+                    let moviesResult = JSON.parse(localStorage.searchMoviesResult);
+                    let index = moviesResult.findIndex(item => item.id === movie.movieId);
+                    if (index !== -1) {
+                        moviesResult[index].isLiked = false;
+                        localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
+                    }
+
+                    index = movies.findIndex(item => item.movieId === movieId);
                     movies.splice(index, 1);
                     setSavedMovies(movies);
                 });
@@ -313,7 +313,7 @@ function App() {
     React.useEffect(() => {
         if (savedMovies) {
             localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-            setSavedMoviesToShow(savedMovies);
+            searchForSavedMovies(localStorage.savedRequest, localStorage.savedShortMovies);
         }
         else {
             localStorage.removeItem('savedMovies');
