@@ -17,12 +17,12 @@ function MoviesCard({
         year,
         description,
         nameRU,
-        nameEN,
     } = item;
 
     const dbId = item._id;
     const movieId = item.id || item.movieId;
     const country = item.country || 'Неизвестно';
+    const nameEN = item.nameEN || 'Неизвестно';
     const image = (item.image && item.image.url && `https://api.nomoreparties.co${item.image.url}`) || item.image;
     const duration = item.duration;
     const thumbnail = (item.image && item.image.formats && `https://api.nomoreparties.co${item.image.formats.thumbnail.url}`) || item.thumbnail;

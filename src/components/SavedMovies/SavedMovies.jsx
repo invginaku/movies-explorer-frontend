@@ -26,11 +26,16 @@ function SavedMovies({
                      }) {
     const [isLoading, setIsLoading] = React.useState(false);
 
-    // React.useEffect(() => {
-    //     getSavedMovies().then((movies)  => {
-    //         setSavedMoviesToShow(movies);
-    //     });
-    // }, []);
+    React.useEffect(() => {
+        if (localStorage.hasOwnProperty('savedRequest')) {
+            onSearchForSavedMovies(localStorage.request, localStorage.savedShortMovies, true);
+        }
+        if (!localStorage.hasOwnProperty('savedMovies')) {
+            getSavedMovies().then(() => {
+                //return onSearchForSavedMovies(localStorage.request, localStorage.shortMovies, true);
+            })
+        }
+    }, []);
 
     return(
         <>

@@ -90,10 +90,12 @@ function App() {
     }
 
     function clearData() {
-        setLoggedIn(false);
+        localStorage.removeItem('searchSavedMoviesResult');
         localStorage.clear();
         setMoviesToShow([]);
         setSavedMoviesToShow([]);
+        setLoggedIn(false);
+        setSavedMovies(undefined);
     }
 
     function signUp({ name, email, password }) {
@@ -108,12 +110,14 @@ function App() {
                 setLoggedIn(true);
                 localStorage.setItem('loggedIn', 'true');
                 history.push('/movies');
+                getMovies();
             })
             .then(() => getProfileData())
             .catch(err => openModal(getErrorMessage(err)));
     }
 
     function signOut() {
+        window.onbeforeunload = function() {};
         return mainApi.signOut()
             .then(() => clearData())
             .catch(err => openModal(getErrorMessage(err)));
@@ -159,9 +163,12 @@ function App() {
     }, [openModal]);
 
     function searchForMovies(request, shortFilter) {
-        if (shortFilter && localStorage.request === request) {
+        if (localStorage.hasOwnProperty('cachedRequest') && localStorage.cachedRequest === request) {
             return new Promise((resolve, reject) => {
-                resolve(filterMovies(moviesToShow, request, true));
+                let movies = moviesToShow
+                if (!shortFilter && localStorage.searchMoviesResult)
+                    movies = JSON.parse(localStorage.searchMoviesResult)
+                resolve(filterMovies(movies, request, shortFilter));
             })
                 .then(movies => {
                     setMoviesNotFound(!movies[0]);
@@ -171,11 +178,14 @@ function App() {
         }
 
         return getMovies()
-            .then(movies => filterMovies(movies, request, shortFilter))
+            .then(movies => {
+                localStorage.setItem('searchMoviesResult', JSON.stringify(movies));
+                return filterMovies(movies, request, shortFilter);
+            })
             .then(movies => {
                 setMoviesNotFound(!movies[0]);
                 setMoviesToShow(movies);
-                localStorage.setItem('searchMoviesResult', JSON.stringify(movies));
+                localStorage.setItem('cachedRequest', request);
             })
             .catch(err => openModal(getErrorMessage(err)));
     }
@@ -210,7 +220,13 @@ function App() {
                         newMoviesToShow[movieIndex].isLiked = true;
 
                         setMoviesToShow(newMoviesToShow);
-                        localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
+
+                        let moviesResult = JSON.parse(localStorage.searchMoviesResult);
+                        const index = moviesResult.findIndex(item => item.id === res.movieId);
+                        if (index !== -1) {
+                            moviesResult[index].isLiked = true;
+                            localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
+                        }
 
                         movies.push(data);
                         setSavedMovies(movies);
@@ -231,6 +247,13 @@ function App() {
             if (movieToDelete) {
                 movieId = movieToDelete.movieId;
             }
+
+            let moviesResult = JSON.parse(localStorage.searchMoviesResult);
+            const index = moviesResult.findIndex(item => item.id === movie.movieId);
+            if (index !== -1) {
+                moviesResult[index].isLiked = false;
+                localStorage.setItem('searchMoviesResult', JSON.stringify(moviesResult));
+            }
         }
 
         return mainApi.deleteSavedMovie(movieId)
@@ -242,7 +265,7 @@ function App() {
                         const newMoviesToShow = [...moviesToShow];
                         newMoviesToShow[movieIndex].isLiked = false;
                         setMoviesToShow(newMoviesToShow);
-                        localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
+                        //localStorage.setItem('searchMoviesResult', JSON.stringify(newMoviesToShow));
                     }
 
                     let index = movies.findIndex(item => item.movieId === movieId);
@@ -289,7 +312,6 @@ function App() {
     React.useEffect(() => {
         if (savedMovies) {
             localStorage.setItem('savedMovies', JSON.stringify(savedMovies));
-            //TODO: handle search
             setSavedMoviesToShow(savedMovies);
         }
         else {
