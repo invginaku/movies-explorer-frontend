@@ -7,10 +7,18 @@
     border: 1px solid #ee3465;
     border-radius: 5px;
     background-color: #fafafa;
+    visibility: visible;
+    opacity: 1;
+    transition: visibility .3s, opacity .3s linear;
 }
 
 .modal_hidden {
-    display: none;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.modal_success {
+    border-color: green;
 }
 
 .modal__close {
@@ -30,11 +38,19 @@
     cursor: pointer;
 }
 
+.modal__close_success {
+    background-image: url('../../images/close-modal-success.svg');
+}
+
 .modal__title {
     margin: 0;
     font-size: 20px;
     line-height: initial;
     color: #ee3465;
+}
+
+.modal__title_success {
+    color: green;
 }
 
 .modal__text {

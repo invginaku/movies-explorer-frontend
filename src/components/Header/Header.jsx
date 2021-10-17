@@ -3,7 +3,13 @@ import './Header.css';
 import Logo from '../Logo/Logo.jsx';
 import Navigation from '../Navigation/Navigation.jsx';
 
-function Header({ place, isMenuOpen, onMenuOpen, onMenuClose }) {
+function Header({
+                    place,
+                    loggedIn,
+                    isMenuOpen,
+                    onMenuOpen,
+                    onMenuClose
+                }) {
     let headerModificator;
 
     switch (place) {
@@ -24,6 +30,7 @@ function Header({ place, isMenuOpen, onMenuOpen, onMenuClose }) {
         <header className={`header ${headerModificator}`}>
             <Logo />
             <Navigation
+                loggedIn={loggedIn}
                 place={place}
                 isMenuOpen={isMenuOpen}
                 onMenuOpen={onMenuOpen}

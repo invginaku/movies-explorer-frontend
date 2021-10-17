@@ -11,7 +11,7 @@
     margin: 0 50px 0 0;
 }
 
-.navigation__links_place_main {
+.navigation__profile-link_type_login {
     display: none;
 }
 
@@ -79,7 +79,6 @@
     background-position: center;
     cursor: pointer;
 }
-
 
 .navigation__profile-btn:hover {
     background-color: #b1b1b1;

@@ -38,6 +38,11 @@
     color: #ee3465;
 }
 
+.profile__button:disabled {
+    text-decoration: none;
+    cursor: not-allowed;
+}
+
 @media screen and (max-width: 449px) {
     .profile {
         min-height: 706px;

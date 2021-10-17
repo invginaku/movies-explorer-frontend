@@ -1,14 +1,73 @@
+import React from 'react';
+
 import './SavedMovies.css';
 
+import Header from '../Header/Header.jsx';
 import SearchForm from '../SearchForm/SearchForm.jsx';
+import Preloader from '../Preloader/Preloader.jsx';
 import MoviesCardList from '../MoviesCardList/MoviesCardList.jsx';
+import Footer from '../Footer/Footer.jsx';
 
-function SavedMovies() {
+function SavedMovies({
+                         loggedIn,
+                         menuProps,
+                         savedMoviesToShow,
+                         moviesToMap,
+                         moviesToAdd,
+                         savedMoviesNotFound,
+                         savedMovies,
+                         getSavedMovies,
+                         setSavedMoviesToShow,
+                         onSearchForSavedMovies,
+                         onGetMoreMovies,
+                         onDislike,
+                         onOpenMovieModal,
+                         onSetCurrentMovie,
+                     }) {
+    const [isLoading, setIsLoading] = React.useState(false);
+
+    React.useEffect(() => {
+        if (localStorage.hasOwnProperty('savedRequest')) {
+            onSearchForSavedMovies(localStorage.request, localStorage.savedShortMovies, true);
+        }
+        if (!localStorage.hasOwnProperty('savedMovies')) {
+            getSavedMovies().then(() => {
+                //return onSearchForSavedMovies(localStorage.request, localStorage.shortMovies, true);
+            })
+        }
+    }, []);
+
     return(
-        <section className="saved-movies">
-            <SearchForm place="saved" />
-            <MoviesCardList place="saved" />
-        </section>
+        <>
+            <Header
+                place="saved"
+                loggedIn={loggedIn}
+                {...menuProps}
+            />
+            <section className="saved-movies">
+                <SearchForm
+                    place="saved"
+                    onSearch={onSearchForSavedMovies}
+                    setIsLoading={setIsLoading}
+                />
+                {isLoading && <Preloader />}
+                {
+                   !isLoading &&
+                    <MoviesCardList
+                        place="saved"
+                        moviesToShow={savedMoviesToShow}
+                        moviesToMap={moviesToMap}
+                        moviesToAdd={moviesToAdd}
+                        notFound={savedMoviesNotFound}
+                        onGetMoreMovies={onGetMoreMovies}
+                        onDislike={onDislike}
+                        onOpenMovieModal={onOpenMovieModal}
+                        onSetCurrentMovie={onSetCurrentMovie}
+                    />
+               }
+            </section>
+            <Footer />
+        </>
     );
 }
 

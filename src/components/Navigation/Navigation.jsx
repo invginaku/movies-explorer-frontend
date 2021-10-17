@@ -5,15 +5,17 @@ import './Navigation.css';
 import Menu from '../Menu/Menu.jsx';
 
 function Navigation({
+                        loggedIn,
                         place,
                         isMenuOpen,
                         onMenuOpen,
                         onMenuClose
                     }) {
+
     return(
         <>
             <nav className="navigation">
-                <ul className={`navigation__links navigation__links_place_${place}`}>
+                {(place !== 'main' || loggedIn) && <ul className='navigation__links'>
                     <li className="navigation__list-item">
                         <NavLink
                             className="navigation__page-link"
@@ -32,9 +34,9 @@ function Navigation({
                             Сохранённые фильмы
                         </NavLink>
                     </li>
-                </ul>
+                </ul>}
                 <ul className={`navigation__buttons navigation__buttons_place_${place}`}>
-                    {(place === 'main') && <li className="navigation__list-item navigation__list-item_type_button">
+                    {(place === 'main' && !loggedIn) && <li className="navigation__list-item navigation__list-item_type_button">
                         <Link
                             className="navigation__profile-link navigation__profile-link_type_register"
                             to="/signup"
@@ -42,7 +44,7 @@ function Navigation({
                             Регистрация
                         </Link>
                     </li>}
-                    {(place === 'main') && <li className="navigation__list-item navigation__list-item_type_button">
+                    {(place === 'main' && !loggedIn) && <li className="navigation__list-item navigation__list-item_type_button">
                         <Link
                             className="navigation__profile-link navigation__profile-link_type_login"
                             to="/signin"
@@ -50,9 +52,9 @@ function Navigation({
                             Войти
                         </Link>
                     </li>}
-                    {(place !== 'main') && <li className="navigation__list-item navigation__list-item_type_button">
+                    {(place !== 'main' || loggedIn) && <li className="navigation__list-item navigation__list-item_type_button">
                         <Link
-                            className="navigation__profile-link navigation__profile-link_type_profile"
+                            className="navigation__profile-link"
                             to="/profile"
                         >
                             Аккаунт
@@ -61,7 +63,7 @@ function Navigation({
                         </Link>
                     </li>}
                 </ul>
-                {(place !== 'main') && <button className="navigation__menu" type="button" onClick={onMenuOpen} />}
+                {(place !== 'main' || loggedIn) && <button className="navigation__menu" type="button" onClick={onMenuOpen} />}
             </nav>
             <Menu isVisible={isMenuOpen} onClose={onMenuClose} />
         </>

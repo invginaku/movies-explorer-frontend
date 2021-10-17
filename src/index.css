@@ -40,6 +40,12 @@ body {
     right: 5px;
 }
 
+.root__movie-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 @media screen and (max-width: 464px) {
     .root__modal {
         bottom: 5px;
