@@ -215,11 +215,12 @@ function App() {
                     .then((movies) => {
                         const movieIndex = moviesToShow.findIndex(item => item.id === res.movieId);
 
-                        const newMoviesToShow = [...moviesToShow];
+                        let newMoviesToShow = [...moviesToShow];
 
                         newMoviesToShow[movieIndex].isLiked = true;
 
                         setMoviesToShow(newMoviesToShow);
+                        localStorage.savedShortMovies = false;
 
                         let moviesResult = JSON.parse(localStorage.searchMoviesResult);
                         const index = moviesResult.findIndex(item => item.id === res.movieId);
